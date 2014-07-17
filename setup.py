@@ -2,13 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='tx-easy-pika',
-    version='1.0',
+    version='1.0.1',
     author='SweetIQ',
     author_email='rob@sweetiq.com',
     description=('Wrapper around Pika\'s Twisted connection to make it simpler to work with.'),
     packages=find_packages(),
     install_requires=[
-        'Twisted==14.0.0'
+        'Twisted==14.0.0',
+        'pika==0.9.14'
     ],
     url='http://github.com/SweetIQ/tx-easy-pika',
     keywords=["pika", "rabbitmq", "twisted", "amqpy"],

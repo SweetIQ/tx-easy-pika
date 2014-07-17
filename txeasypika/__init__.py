@@ -46,6 +46,7 @@ class DeferToConnect():
 
         return _decorator
 
+
 def proxy_to_channel(function):
     ''' A decorator to simply forward the call of a method to a ChannelProxy
     object. Note that the wrapped function is never called.'''
@@ -93,8 +94,7 @@ class ChannelProxy(object):
             - `mandatory` - AMQP Mandatory flag.
             - `immediate` - AMQP Immediate flag.
         '''
-        if properties is None:
-            properties = BasicProperties(**properties)
+        properties = BasicProperties(properties or {})
 
         if not isinstance(message, basestring):
             # Convert to JSON string if it's not a string

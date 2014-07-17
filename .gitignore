@@ -1,0 +1,11 @@
+# Virtualenv Stuff
+bin
+include
+lib
+local
+
+# Vim Stuff
+*.swp
+
+# Other
+*.pyc

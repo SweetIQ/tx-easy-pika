@@ -9,3 +9,7 @@ local
 
 # Other
 *.pyc
+
+# pypi stuff
+tx_easy_pika.egg-info
+dist

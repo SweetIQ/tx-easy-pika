@@ -9,7 +9,8 @@ setup(
     packages=find_packages(),
     install_requires=[
         'Twisted==14.0.0',
-        'pika==0.9.14'
+        'pika==0.9.14',
+        'six',
     ],
     url='http://github.com/SweetIQ/tx-easy-pika',
     keywords=["pika", "rabbitmq", "twisted", "amqpy"],

@@ -6,6 +6,7 @@ import pika
 import json
 import logging
 import functools
+import six
 from twisted.internet import defer, task, reactor
 from pika.spec import BasicProperties
 
@@ -61,7 +62,7 @@ def proxy_to_channel(function):
 def to_serializable(data):
     ''' Convert data to something that is JSON-serializable. '''
     if data is None or isinstance(data, int) or isinstance(data, float) or \
-            isinstance(data, basestring):
+            isinstance(data, six.string_types):
         # some data types are converted as-is
         return data
     if isinstance(data, list):
@@ -69,7 +70,7 @@ def to_serializable(data):
         return [to_serializable(d) for d in data]
     if isinstance(data, dict):
         # Call recursively on nested structures
-        return {k: to_serializable(v) for k, v in data.iteritems()}
+        return {k: to_serializable(v) for k, v in six.iteritems(data)}
 
     # not in our list? just convert it to a string
     return str(data)
@@ -96,12 +97,12 @@ class ChannelProxy(object):
         '''
         properties = BasicProperties(properties or {})
 
-        if not isinstance(message, basestring):
+        if not isinstance(message, six.string_types):
             # Convert to JSON string if it's not a string
             message = json.dumps(to_serializable(message))
             properties.content_type = "application/json"
 
-        if not isinstance(routing_key, basestring):
+        if not isinstance(routing_key, six.string_types):
             raise InvalidRoutingKeyException("'%s' is not a valid routing key!" %
                                              routing_key)
 
@@ -225,7 +226,7 @@ class QueueConnection(object):
             channel, method, header, message = yield queue_object.get()
 
             try:
-                message = json.loads(message)
+                message = json.loads(message.decode('utf-8'))
             except ValueError:
                 # If the JSON can't be parsed, this message is broke - ack it
                 # so that it doesn't hang out in the queue and break other

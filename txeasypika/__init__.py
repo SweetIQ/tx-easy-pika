@@ -197,7 +197,8 @@ class QueueConnection(object):
     @DeferToConnect()
     @defer.inlineCallbacks
     def bind(self, queue_name, exchange, routing_key, callback=None,
-             arguments=None, no_ack=False):
+             arguments=None, auto_delete=False, exclusive=False,
+             no_ack=False):
         ''' Declare and bind a queue.
         Arguments:
             `queue_name` - The name of the queue we want to declare.
@@ -239,8 +240,8 @@ class QueueConnection(object):
         logger.debug("Binding %s to %s/%s" % (queue_name, exchange, routing_key))
 
         yield self.channel.queue_declare(queue=queue_name,
-                                         auto_delete=False,
-                                         exclusive=False,
+                                         auto_delete=auto_delete,
+                                         exclusive=exclusive,
                                          durable=True,
                                          arguments=arguments)
         yield self.channel.queue_bind(queue=queue_name,
